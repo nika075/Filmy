@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,35 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
         MovieApi movieApi = retrofit.create(MovieApi.class);
 
-        Call<List<Movie>> call = movieApi.getMovies();
+        Call<JSONResponse> call = movieApi.getMovies();
 
-        call.enqueue(new Callback<List<Movie>>() {
+        call.enqueue(new Callback<JSONResponse>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-
-                if(response.code() != 200){
-                    //handle the error &display it
-                    return;
-                }
-
-                List<Movie> movies = response.body();
-
-                for (Movie movie : movies){
-//                    String responseTest = "";
-//                    responseTest += movie.getId();
-//                    Log.v("Tag", ""+ responseTest);
-
-                    movieList.add(movie);
-
-                }
-
-
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                JSONResponse jsonResponse = response.body();
+                movieList = new ArrayList<>(Arrays.asList(jsonResponse.getMoviz()));
                 PutDataIntoRecyclerView(movieList);
-
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
 
             }
         });
