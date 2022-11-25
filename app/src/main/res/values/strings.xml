@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Filmy</string>
+    <string name="textview">TextView</string>
+    <string name="description">Description:</string>
+    <string name="actors">Actors:</string>
+    <string name="release_date">Release Date</string>
+    <string name="title">Title</string>
+    <string name="duration">duration</string>
+    <string name="category">Category</string>
+    <string name="oceny">oceny</string>
+    <string name="direction">direction</string>
 </resources>

@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface MovieApi {
 
-    @GET("v3/1f9bdb07-0b9b-4514-8531-04ca9a7ea3e0")
+    @GET("v3/9c2968bd-7d68-46c8-95fa-c3fecaf6ff62")
     Call<JSONResponse> getMovies();
 }

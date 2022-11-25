@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,11 +21,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewInterface {
 
     RecyclerView recyclerView;
     List<Movie> movieList;
-
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.RecyclerView);
         movieList = new ArrayList<>();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://run.mocky.io/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -51,12 +55,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void PutDataIntoRecyclerView(List<Movie> movieList) {
-        Adaptery adaptery = new Adaptery(this,movieList);
+        Adaptery adaptery = new Adaptery(this,movieList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptery);
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(MainActivity.this,DetailsOfFilmActivity.class);
+        intent.putExtra("description", movieList.get(position).getMoreData().getDescription());
+        intent.putExtra("actors", movieList.get(position).getMoreData().getActors());
+        startActivity(intent);
     }
 }

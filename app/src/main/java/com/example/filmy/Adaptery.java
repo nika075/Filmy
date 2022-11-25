@@ -16,13 +16,14 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class Adaptery extends RecyclerView.Adapter<Adaptery.MyViewHolder> {
-
+    private final RecyclerViewInterface recyclerViewInterface;
     private Context mContext;
     private List<Movie> movieList;
 
-    public Adaptery(Context mContext, List<Movie> movieList) {
+    public Adaptery(Context mContext, List<Movie> movieList, RecyclerViewInterface recyclerViewInterface) {
         this.mContext = mContext;
         this.movieList = movieList;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -32,7 +33,7 @@ public class Adaptery extends RecyclerView.Adapter<Adaptery.MyViewHolder> {
         View v;
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         v = layoutInflater.inflate(R.layout.movie_item, parent, false);
-        return new MyViewHolder(v);
+        return new MyViewHolder(v, recyclerViewInterface);
 
     }
 
@@ -49,20 +50,15 @@ public class Adaptery extends RecyclerView.Adapter<Adaptery.MyViewHolder> {
         Glide.with(mContext)
                 .load(movieList.get(position).getPoster())
                 .into(holder.img);
-        System.out.println("poster!!"+movieList.get(position).getPoster());
         //setting the rating bar value
         holder.ratingBar.setRating(movieList.get(position).getRating()/2);
+        holder.ratingBar.setIsIndicator(true);
     }
 
     @Override
     public int getItemCount() {
         return movieList.size();
     }
-
-
-
-
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -74,7 +70,7 @@ public class Adaptery extends RecyclerView.Adapter<Adaptery.MyViewHolder> {
         TextView category;
         TextView release;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             title = itemView.findViewById(R.id.textView2);
@@ -84,6 +80,16 @@ public class Adaptery extends RecyclerView.Adapter<Adaptery.MyViewHolder> {
             direction = itemView.findViewById(R.id.textView6);
             category = itemView.findViewById(R.id.textView4);
             release = itemView.findViewById(R.id.textView);
+
+            itemView.setOnClickListener(v -> {
+                if(recyclerViewInterface!= null){
+                    int pos = getAdapterPosition();
+
+                    if(pos != RecyclerView.NO_POSITION){
+                        recyclerViewInterface.onItemClick(pos);
+                    }
+                }
+            });
 
         }
     }
