@@ -1,7 +1,5 @@
 package com.example.filmy;
 
-import com.google.gson.annotations.SerializedName;
-
 public class JSONResponse {
 
     private Movie[] moviz;

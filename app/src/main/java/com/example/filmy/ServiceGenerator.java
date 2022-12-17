@@ -3,7 +3,6 @@ package com.example.filmy;
 import android.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -40,6 +39,7 @@ public class ServiceGenerator {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient())
+                //converter json into java object
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
@@ -59,7 +59,6 @@ public class ServiceGenerator {
 
     /**
      * This interceptor will be called both if the network is available and if the network is not available
-     * @return
      */
     private static Interceptor offlineInterceptor() {
         return chain -> {
@@ -85,7 +84,6 @@ public class ServiceGenerator {
 
     /**
      * This interceptor will be called ONLY if the network is available
-     * @return
      */
     private static Interceptor networkInterceptor() {
         return chain -> {
